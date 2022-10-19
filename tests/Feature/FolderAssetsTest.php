@@ -1,8 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-//test('Get Root Folder Assets', function () {
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 //    $client = authenticate();
 //
 //    $rootFolder = $client->folders()->getFolderStructure()->getFolder();

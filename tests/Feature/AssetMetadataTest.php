@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 use Fairway\PixelboxxSaasApi\PixelboxxResourceName;
 use Fairway\PixelboxxSaasApi\Request\Assets\AssetMetadata;
 
@@ -20,7 +27,6 @@ test('Get Asset with Metadata', function () {
     });
     expect(count($assetMetadata->getAsset()->getMetadata()))->toBeGreaterThan(0);
 })->group('Assets');
-
 
 test('Get a non-existing file', function () {
     $client = authenticate();

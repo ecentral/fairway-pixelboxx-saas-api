@@ -11,14 +11,11 @@ grumphp:
       no_check_publish: true
       with_dependencies: false
       strict: false
-    phpstan:
-      memory_limit: "-1"
-      configuration: phpstan.neon
-      triggered_by: [ 'php' ]
-      level: 5
-    phpunit:
-      config_file: phpunit.xml
-      always_execute: true
+#    phpstan:
+#      memory_limit: "-1"
+#      configuration: phpstan.neon
+#      triggered_by: [ 'php' ]
+#      level: 5
     phpcsfixer2:
       allow_risky: ~
       config: .php-cs-fixer.dist.php
