@@ -1,6 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
 namespace Fairway\PixelboxxSaasApi\Endpoint;
 
@@ -25,7 +32,7 @@ final class Assets
     /**
      * @param PixelboxxResourceName|string|null $assetId
      * @param callable(AssetMetadata $structure): void|null $applyParameters
-     * @return null|AssetResponseObject
+     * @return AssetResponseObject|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAsset($assetId = null, callable $applyParameters = null): ?AssetResponseObject
