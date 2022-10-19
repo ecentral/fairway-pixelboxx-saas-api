@@ -2,6 +2,12 @@ set dotenv-load := true
 
 set shell := ["bash", "-c"]
 
+all:
+    just grumphp
+    just test "7.4"
+    just test "8.0"
+    just test "8.1"
+
 _docker version command:
     docker run --rm -v $(pwd):/app --env-file .env -w /app kanti/buildy:{{ version }} {{ command }}
 
@@ -23,9 +29,3 @@ fix:
 test version="8.0":
     just install {{ version }}
     just _docker {{ version }} "composer test"
-
-all:
-    just grumphp
-    just test "7.4"
-    just test "8.0"
-    just test "8.1"
