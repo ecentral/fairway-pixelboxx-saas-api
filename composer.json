@@ -1,0 +1,50 @@
+{
+  "name": "fairway/pixelboxx-saas-api",
+  "type": "library",
+  "description": "Client library for Pixelboxx SaaS APIs.",
+  "homepage": "https://github.com/ecentral/fairway-pixelboxx-saas-api/",
+  "license": "MIT",
+  "keywords": [
+    "Pixelboxx",
+    "API"
+  ],
+  "authors": [
+    {
+      "name": "Christian Rodriguez Benthake",
+      "role": "Developer",
+      "email": "c.rodriguez.benthake@ecentral.de"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.3 || ^7.3",
+    "psr/log": "^1.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "phpstan/phpstan": "^1.2",
+    "friendsofphp/php-cs-fixer": "^3.3",
+    "phpro/grumphp": "^1.5",
+    "pestphp/pest": "^1.21"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fairway\\PixelboxxSaasApi\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Fairway\\PixelboxxSaasApi\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "phpro/grumphp": true,
+      "pestphp/pest-plugin": true
+    }
+  },
+  "scripts": {
+    "test": "XDEBUG_MODE=coverage vendor/bin/pest --testdox --color=always"
+  }
+}
