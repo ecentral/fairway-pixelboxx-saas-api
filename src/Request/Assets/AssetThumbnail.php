@@ -13,37 +13,36 @@ namespace Fairway\PixelboxxSaasApi\Request\Assets;
 
 use Fairway\PixelboxxSaasApi\PixelboxxResourceName;
 use Fairway\PixelboxxSaasApi\Request\AbstractBasicRequest;
-use Fairway\PixelboxxSaasApi\Response\DownloadResponseObject;
+use Fairway\PixelboxxSaasApi\Response\AssetThumbnailResponseObject;
 use Fairway\PixelboxxSaasApi\Response\ResponseObject;
 
-final class DownloadAsset extends AbstractBasicRequest
+final class AssetThumbnail extends AbstractBasicRequest
 {
-    private PixelboxxResourceName $prn;
-
-    public function __construct(PixelboxxResourceName $prn)
+    private PixelboxxResourceName $assetId;
+    public function __construct(PixelboxxResourceName $assetId)
     {
-        $this->prn = $prn;
+        $this->assetId = $assetId;
+    }
+
+    public function getMethod(): string
+    {
+        return self::GET;
+    }
+
+    public function getUriPart(): string
+    {
+        return 'thumbnails/{assetId}/url';
     }
 
     public function getPathParams(): array
     {
         return [
-            'prn' => (string)$this->prn,
+            'assetId' => (string)$this->assetId,
         ];
-    }
-
-    public function getMethod(): string
-    {
-        return AbstractBasicRequest::GET;
-    }
-
-    public function getUriPart(): string
-    {
-        return 'assets/{prn}/download';
     }
 
     public function getResponseObject(): ?ResponseObject
     {
-        return new DownloadResponseObject();
+        return new AssetThumbnailResponseObject();
     }
 }

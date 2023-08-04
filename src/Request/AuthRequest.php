@@ -1,8 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Fairway\PixelboxxSaasApi\Request;
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
+namespace Fairway\PixelboxxSaasApi\Request;
 
 use Fairway\PixelboxxSaasApi\Response\AuthResponseObject;
 use Fairway\PixelboxxSaasApi\Response\ResponseObject;
@@ -45,6 +52,9 @@ final class AuthRequest implements RequestObject
         ];
     }
 
+    /**
+     * @return ResponseObject<AuthResponseObject>
+     */
     public function getResponseObject(): ResponseObject
     {
         return new AuthResponseObject();

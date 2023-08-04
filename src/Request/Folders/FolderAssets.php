@@ -15,15 +15,16 @@ use Fairway\PixelboxxSaasApi\PixelboxxResourceName;
 use Fairway\PixelboxxSaasApi\Request\AbstractBasicRequest;
 use Fairway\PixelboxxSaasApi\Response\FolderResponseObject;
 
-final class FolderStructure extends AbstractBasicRequest
+final class FolderAssets extends AbstractBasicRequest
 {
     public const ACCESS_TYPE_VIEW = 'View';
     public const ACCESS_TYPE_IMPORT = 'Import';
 
-    private ?PixelboxxResourceName $folderId;
+    private ?PixelboxxResourceName $folderId = null;
     private int $page = 1;
     private int $itemsPerPage = 10;
-    private int $depth = 10;
+    private int $depth = 100;
+    private bool $withChildren = false;
     private string $accessType = self::ACCESS_TYPE_VIEW;
 
     public function __construct(PixelboxxResourceName $folderId = null)
@@ -33,36 +34,43 @@ final class FolderStructure extends AbstractBasicRequest
 
     public function getMethod(): string
     {
-        return self::GET;
+        return self::POST;
     }
 
     public function getUriPart(): string
     {
-        if ($this->folderId !== null && !$this->folderId->isForRootFolder()) {
-            return 'folders/{folderId}';
-        }
-
-        return 'folders';
-    }
-
-    public function getPathParams(): array
-    {
-        if ($this->folderId !== null) {
-            return [
-                'folderId' => (string)$this->folderId,
-            ];
-        }
-
-        return [];
+        return 'folders/{folderId}/content';
     }
 
     public function getQueryParams(): array
     {
         return [
-            'page' => $this->getPage(),
-            'per_page' => $this->getItemsPerPage(),
-            'depth' => $this->getDepth(),
-            'accessType' => $this->getAccessType(),
+            'page' => $this->page,
+            'per_page' => $this->itemsPerPage,
+            'depth' => $this->depth,
+            'with_children' => $this->withChildren,
+        ];
+    }
+
+    public function getOptions(): array
+    {
+        return [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'sort' => [
+                    'key' => 'oid',
+                    'direction' => 'asc',
+                ],
+            ]),
+        ];
+    }
+
+    public function getPathParams(): array
+    {
+        return [
+            'folderId' => (string)$this->folderId,
         ];
     }
 
@@ -88,9 +96,10 @@ final class FolderStructure extends AbstractBasicRequest
         return $this->accessType;
     }
 
-    public function setAccessType(string $accessType): FolderStructure
+    public function setAccessType(string $accessType): FolderAssets
     {
         $this->accessType = $accessType;
+
         return $this;
     }
 
@@ -102,6 +111,7 @@ final class FolderStructure extends AbstractBasicRequest
     public function setDepth(int $depth): self
     {
         $this->depth = $depth;
+
         return $this;
     }
 
@@ -113,6 +123,7 @@ final class FolderStructure extends AbstractBasicRequest
     public function setItemsPerPage(int $itemsPerPage): self
     {
         $this->itemsPerPage = $itemsPerPage;
+
         return $this;
     }
 
@@ -124,6 +135,7 @@ final class FolderStructure extends AbstractBasicRequest
     public function setPage(int $page): self
     {
         $this->page = $page;
+
         return $this;
     }
 }

@@ -11,13 +11,12 @@ declare(strict_types=1);
 
 namespace Fairway\PixelboxxSaasApi\Response;
 
-final class AuthResponseObject extends ResponseObjectAbstract
+use Fairway\PixelboxxSaasApi\Model\Asset;
+
+final class AssetResponseObject extends ResponseObjectAbstract
 {
-    public string $accessToken;
-    public int $expiresIn;
-    public string $type;
-    public string $refreshToken;
     public array $data;
+    private Asset $asset;
 
     public function getResponseType(): string
     {
@@ -27,11 +26,12 @@ final class AuthResponseObject extends ResponseObjectAbstract
     public function fromArray(array $response): ResponseObject
     {
         $this->data = $response;
-        $this->accessToken = $response['access_token'];
-        $this->expiresIn = (int)$response['expires_in'];
-        $this->type = $response['token_type'];
-        $this->refreshToken = $response['refresh_token'];
-
+        $this->asset = Asset::createFromArray($response);
         return $this;
+    }
+
+    public function getAsset(): Asset
+    {
+        return $this->asset;
     }
 }
