@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\PixelboxxSaasApi;
 
 use Fairway\PixelboxxSaasApi\Endpoint\Assets;
@@ -11,6 +18,7 @@ use Fairway\PixelboxxSaasApi\Request\RequestObject;
 use Fairway\PixelboxxSaasApi\Response\AuthResponseObject;
 use Fairway\PixelboxxSaasApi\Response\ResponseObject;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -27,30 +35,52 @@ final class Client
         $this->createGuzzleClient($client);
     }
 
+    public function getOptions(): ClientOptions
+    {
+        return $this->options;
+    }
+
     public function authenticate(string $username, string $password): self
     {
         $request = new AuthRequest($username, $password);
         $this->authObject = $this->request($request);
         $this->accessToken = $this->authObject->accessToken;
+
         return $this;
     }
 
-    public function request(RequestObject $requestObject): ResponseObject
+    /**
+     * @template T
+     * @param RequestObject<T> $requestObject
+     * @return ResponseObject
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function request(RequestObject $requestObject): ?ResponseObject
     {
-        $response = $this->client->request(
-            $requestObject->getMethod(),
-            $this->getUri(
-                $requestObject->getUriPart(),
-                $requestObject->getPathParams(),
-                $requestObject->getQueryParams(),
-            ),
-            array_merge(
-                [
-                    'headers' => ['Authorization' => sprintf('Bearer %s', $this->accessToken)]
-                ],
-                $requestObject->getOptions(),
-            )
+        $options = array_merge_recursive(
+            [
+                'headers' => ['Authorization' => sprintf('Bearer %s', $this->accessToken)],
+            ],
+            $requestObject->getOptions(),
         );
+
+        try {
+            $response = $this->client->request(
+                $requestObject->getMethod(),
+                $this->getUri(
+                    $requestObject->getUriPart(),
+                    $requestObject->getPathParams(),
+                    $requestObject->getQueryParams(),
+                ),
+                $options,
+            );
+        } catch (ClientException $exception) {
+            if ($exception->getResponse()->getStatusCode() === 404) {
+                return null;
+            }
+            throw $exception;
+        }
+
         return $this->responseToObject($response, $requestObject->getResponseObject());
     }
 
@@ -79,7 +109,6 @@ final class Client
                 'debug' => $this->options->isDebug(),
                 'headers' => $headers,
             ]);
-
         }
         $this->client = $client;
     }
@@ -93,6 +122,7 @@ final class Client
         if ($queryParams !== []) {
             $url .= '?' . http_build_query($queryParams);
         }
+
         return sprintf('https://%s/servlet/api/v1.0/%s', $this->options->getDomain(), $url);
     }
 
@@ -109,17 +139,25 @@ final class Client
     /**
      * @template T
      * @phpstan-param class-string<T> $className
-     * @phpstan-return ResponseObject|T|null
+     * @phpstan-return T|null
      */
     public function responseToObject(ResponseInterface $response, ResponseObject $responseObject): ?ResponseObject
     {
         $contents = $response->getBody()->getContents();
+        $responseType = $responseObject->getResponseType();
         try {
-            $result = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
-            return $responseObject->fromArray($result);
+            switch ($responseType) {
+                case 'array':
+                    $result = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+
+                    return $responseObject->fromArray($result);
+                case 'contents':
+                    return $responseObject->fromContents($contents);
+            }
         } catch (JsonException $exception) {
             $this->options->getLogger()->debug('Response is not an array: ' . $exception->getMessage());
         }
+
         return null;
     }
 }

@@ -9,13 +9,12 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Fairway\PixelboxxSaasApi\Response;
+namespace Fairway\PixelboxxSaasApi\Model;
 
-interface ResponseObject
+use Fairway\PixelboxxSaasApi\PixelboxxResourceName;
+
+interface PixelboxxObjectInterface
 {
-    public function getResponseType(): string;
-
-    public function fromArray(array $response): ResponseObject;
-
-    public function fromContents(string $contents): ResponseObject;
+    public function getName(): string;
+    public function getId(): PixelboxxResourceName;
 }

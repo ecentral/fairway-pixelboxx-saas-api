@@ -5,13 +5,13 @@
          colors="true"
 >
     <php>
-        <env name="PIXELBOXX_DOMAIN" value="example.demo.pixelboxx.io" />
-        <env name="PIXELBOXX_USER" value="example.user" />
-        <env name="PIXELBOXX_PASSWORD" value="example.password" />
+        <env name="PIXELBOXX_DOMAIN" value="domain" />
+        <env name="PIXELBOXX_USER" value="user" />
+        <env name="PIXELBOXX_PASSWORD" value="password" />
     </php>
     <testsuites>
         <testsuite name="Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

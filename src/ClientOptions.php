@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the "fairway_pixelboxx_saas_api" library by eCentral GmbH.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Fairway\PixelboxxSaasApi;
 
 use Psr\Log\LoggerInterface;
@@ -16,6 +23,8 @@ final class ClientOptions
     private string $userAgent = 'Fairway Pixelboxx SaaS API Client';
     private bool $debug = false;
     private int $timeout = 300;
+    private string $serverId = 'pboxx-pixelboxx';
+    private string $tenant = 'default';
 
     private ?LoggerInterface $logger = null;
 
@@ -76,6 +85,29 @@ final class ClientOptions
     public function setTimeout(int $timeout): self
     {
         $this->timeout = $timeout;
+
         return $this;
+    }
+
+    public function setTenant(string $tenant): self
+    {
+        $this->tenant = $tenant;
+        return $this;
+    }
+
+    public function getTenant(): string
+    {
+        return $this->tenant;
+    }
+
+    public function setServerId(string $serverId): self
+    {
+        $this->serverId = $serverId;
+        return $this;
+    }
+
+    public function getServerId(): string
+    {
+        return $this->serverId;
     }
 }

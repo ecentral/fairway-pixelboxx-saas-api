@@ -9,13 +9,16 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Fairway\PixelboxxSaasApi\Response;
+namespace Fairway\PixelboxxSaasApi\Utility;
 
-interface ResponseObject
+use DateTime;
+
+final class PixelboxxUtility
 {
-    public function getResponseType(): string;
+    public static function buildTimestamp(string $pixelboxxDate): int
+    {
+        $date = new DateTime($pixelboxxDate);
 
-    public function fromArray(array $response): ResponseObject;
-
-    public function fromContents(string $contents): ResponseObject;
+        return $date->getTimestamp();
+    }
 }
