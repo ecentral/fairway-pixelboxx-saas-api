@@ -7,7 +7,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Fairway\PixelboxxSaasApi\Adapter\PixelboxxAdapter;
+namespace Fairway\PixelboxxSaasApi\Adapter;
 
 use Fairway\FairwayFilesystemApi\File;
 use Fairway\PixelboxxSaasApi\Client;

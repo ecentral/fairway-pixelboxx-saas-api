@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Fairway\PixelboxxSaasApi\Adapter\PixelboxxAdapter;
+namespace Fairway\PixelboxxSaasApi\Adapter;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
