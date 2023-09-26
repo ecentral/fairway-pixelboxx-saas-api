@@ -102,7 +102,7 @@ final class Driver implements DriverClient
         if ($identifier->getResourceType() === PixelboxxResourceName::ASSET) {
             return FileType::FILE;
         }
-        throw new NotSupportedException(sprintf('File-Type %s is not supported', $identifier->getResourceType()));
+        throw new NotSupportedException(sprintf('File type %s is not supported', $identifier->getResourceType()));
     }
 
     public function read(string $identifier): string
@@ -142,6 +142,7 @@ final class Driver implements DriverClient
 
     public function lastModified(string $identifier): int
     {
+        // @todo Put field names into constants?
         $metadata = $this->client->assets()->getAsset($identifier)->getAsset()->getMetadataByPropertyId('versiondate');
         return PixelboxxUtility::buildTimestamp($metadata->getValue());
     }
